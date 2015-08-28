@@ -2,7 +2,9 @@
 exec >> /var/log/jmeter-server.log 2>&1
 set -x
 
-export RMI_HOST_DEF=-Djava.rmi.server.hostname=`ifconfig | grep -A1 eth | awk -F "[ :]+" '/inet / {print $4}'`
+DEFAULT_RMI_HOST_DEF=-Djava.rmi.server.hostname=`ifconfig | grep -A1 eth | awk -F "[ :]+" '/inet / {print $4}'`
+export RMI_HOST_DEF=${RMI_HOST_DEF:-${DEFAULT_RMI_HOST_DEF}}
+
 FreeMem=`awk '/MemFree/ { print int($2/1024) }' /proc/meminfo`
 s=$(($FreeMem/10*8))
 x=$(($FreeMem/10*8))
